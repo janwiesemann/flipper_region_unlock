@@ -1,3 +1,4 @@
+#include <furi_hal.h>
 #include <power/power_service/power.h>
 
 #include "../flipper_region_unlock.h"
@@ -71,7 +72,8 @@ bool flipper_region_unlock_scene_main_on_event(void *context,
 
   if (event.type == SceneManagerEventTypeCustom) {
     if (event.event == DialogExResultLeft) {
-      power_reboot(PowerBootModeNormal);
+      Power* power = furi_record_open(RECORD_POWER);
+      power_reboot(power, PowerBootModeNormal);
       return true;
     } else if (event.event == DialogExResultCenter) {
       const size_t regionStructSize =
